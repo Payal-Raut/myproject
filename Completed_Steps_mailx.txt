@@ -1,0 +1,359 @@
+Step 1: Prepare Your Google Account Because Google blocks traditional 
+account passwords for third-party automation, you must create an App 
+Password:
+Go to your Google Account Settings -> Security. Turn on 2-Step 
+Verification.
+
+Search for App passwords at the top. Generate a new app token 
+(e.g., name it "Ubuntu Server").
+
+Copy the generated 16-character security 
+code and strip out any spaces.
+
+Step 2: Resolve System Package Dependencies . If 
+your system package manager (apt) hits broken or missing dependency blocks, 
+clear out old corrupted indices and manually deploy required core libraries:
+
+# Clean out local repository cache files
+sudo rm -rf /var/lib/apt/lists/*
+sudo apt clean
+sudo apt update
+
+# Manually fetch and install blocked system packages if network 400/404 errors occur
+mkdir -p ~/mailutils-fix && cd ~/mailutils-fix
+wget http://ubuntu.com
+wget http://ubuntu.com
+wget http://ubuntu.com
+wget http://ubuntu.com
+
+sudo dpkg -i libgc1_8.2.12-1_amd64.deb libgssglue1_0.9-2_amd64.deb guile-3.0-libs_3.0.11-2_amd64.deb postfix_3.10.6-4ubuntu2_amd64.deb
+
+sudo apt install -f
+sudo apt install mailutils
+
+
+sudo nano /etc/postfix/sasl_passwd
+
+[smtp.gmail.com]:587 your-email@gmail.com:your16characterapppassword
+
+sudo chmod 600 /etc/postfix/sasl_passwd
+sudo postmap /etc/postfix/sasl_passwd
+
+sudo nano /etc/postfix/main.cf
+
+relayhost = [smtp.gmail.com]:587
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+smtp_tls_security_level = encrypt
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+
+sudo systemctl restart postfix
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Passkey ==== twcujwzdjixdfthz
+
+
+
+Objects = table , databases , view don't use where.. 
+how to take backup before truncate , delete ???
+
+differ bet truncate and delete == use of where clause , rollback passible in delete not in truncate , 
+
+	drop                                 |                  delete
+----------------------------------------------------------------------------------------------
+structure , schema , data of table deletes   |	delete only records , structure as it is
+ 
+don't use where				     | can use where clause 
+
+
+
+if u have defining save point , after commit we cannot rollback.
+view ==== virtual table , derived from another table 
+		operations fast .. , fast data retrieve
+		------------------   ------------------	
+
+Indexes == defining index on particular table for retrieving data from table
+		if we don't define index , query will search data one by one from start
+
+sequence ==  organized in particular order . 
+		when we r inserting data , delete  in table , 
+
+stored procedure === A stored procedure is a precompiled collection of one or more SQL statements that are saved directly in the database server. Instead of rewriting and sending the same complex queries over the network repeatedly, you can save the code as a named unit and call it whenever needed
+
+Trigger == before and after trigger..
+
+
+sudo -u postgres -i
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------- PGADMIN --------------------------------------
+				       ========
+
+
+
+payal@payal-VMware-Virtual-Platform:~$
+payal@payal-VMware-Virtual-Platform:~$
+payal@payal-VMware-Virtual-Platform:~$ psql
+psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "payal" does not exist
+payal@payal-VMware-Virtual-Platform:~$ sudo -u postgres -i
+[sudo: authenticate] Password:
+postgres@payal-VMware-Virtual-Platform:~$ psql
+psql (18.6 (Ubuntu 18.6-0ubuntu0.26.04.1))
+Type "help" for help.
+
+postgres=# \dt
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | student | table | postgres
+(1 row)
+
+postgres=# \list
+                                                     List of databases
+   Name    |  Owner   | Encoding | Locale Provider |   Collate   |    Ctype    | Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+-------------+-------------+--------+-----------+-----------------------
+ postgres  | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ template0 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+(3 rows)
+
+postgres=# ALTER USER postgres-# alter user postgres identified by 'Bright@123';
+ERROR:  syntax error at or near "postgres"
+LINE 1: postgres=#
+        ^
+postgres=#
+ERROR:  syntax error at or near "-#"
+LINE 1: ALTER USER postgres-# alter user postgres identified by 'Bri...
+                           ^
+postgres-#
+postgres-# ALTER USER postgres-# alter user postgres identified by 'Bright@123';
+ERROR:  syntax error at or near "postgres"
+LINE 1: postgres=#
+        ^
+postgres=#ALTER USER postgres WITH PASSWORD 'Bright@123';
+ERROR:  syntax error at or near "ERROR"
+LINE 1: ERROR:  syntax error at or near "postgres"
+        ^
+ERROR:  syntax error at or near "ERROR"
+LINE 1: ERROR:  syntax error at or near "postgres"
+        ^
+postgres=# ALTER USER postgres WITH PASSWORD 'Bright@123';
+ALTER ROLE
+postgres=# postgres=#ALTER USER postgres WITH PASSWORD 'Bright@123';
+ERROR:  syntax error at or near "ERROR"
+LINE 1: ERROR:  syntax error at or near "postgres"
+        ^
+ERROR:  syntax error at or near "ERROR"
+LINE 1: ERROR:  syntax error at or near "postgres"
+        ^
+postgres=# ALTER USER postgres WITH PASSWORD 'Bright@123';
+ALTER ROLE
+postgres=#
+ERROR:  syntax error at or near "postgres"
+LINE 1: postgres=#ALTER USER postgres WITH PASSWORD 'Bright@123';
+        ^
+ERROR:  syntax error at or near "ERROR"
+LINE 1: ERROR:  syntax error at or near "ERROR"
+        ^
+postgres-#
+postgres-#
+postgres-#
+postgres-#
+postgres-#
+postgres-# \R
+invalid command \R
+Try \? for help.
+postgres-#
+postgres-#
+postgres-#
+postgres-#
+postgres-#
+postgres-#
+postgres-# \r
+Query buffer reset (cleared).
+postgres=#
+postgres=#
+postgres=#
+postgres=# \list
+                                                     List of databases
+   Name    |  Owner   | Encoding | Locale Provider |   Collate   |    Ctype    | Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+-------------+-------------+--------+-----------+-----------------------
+ Labtest   | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ postgres  | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ template0 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+(4 rows)
+
+postgres=# connect Labtest
+postgres-# \list
+                                                     List of databases
+   Name    |  Owner   | Encoding | Locale Provider |   Collate   |    Ctype    | Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+-------------+-------------+--------+-----------+-----------------------
+ Labtest   | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ postgres  | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ template0 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+(4 rows)
+
+postgres-# \dt
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | student | table | postgres
+(1 row)
+
+postgres-# c postgres
+postgres-# \dt
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | student | table | postgres
+(1 row)
+
+postgres-# q
+postgres-# \q
+postgres@payal-VMware-Virtual-Platform:~$ sudo -u postgres -i
+sudo: I'm sorry postgres. I'm afraid I can't do that
+postgres@payal-VMware-Virtual-Platform:~$ psql
+psql (18.6 (Ubuntu 18.6-0ubuntu0.26.04.1))
+Type "help" for help.
+
+postgres=#
+postgres=#
+postgres=#
+postgres=#
+postgres=#
+postgres=#
+postgres=#
+postgres=#
+postgres=# \dt
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | student | table | postgres
+(1 row)
+
+postgres=# \list
+                                                     List of databases
+   Name    |  Owner   | Encoding | Locale Provider |   Collate   |    Ctype    | Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+-------------+-------------+--------+-----------+-----------------------
+ Labtest   | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ postgres  | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ template0 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+(4 rows)
+
+postgres=# \c Labtest
+You are now connected to database "Labtest" as user "postgres".
+Labtest=# \list
+                                                     List of databases
+   Name    |  Owner   | Encoding | Locale Provider |   Collate   |    Ctype    | Locale | ICU Rules |   Access privileges
+-----------+----------+----------+-----------------+-------------+-------------+--------+-----------+-----------------------
+ Labtest   | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ postgres  | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           |
+ template0 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+ template1 | postgres | UTF8     | libc            | en_US.UTF-8 | en_US.UTF-8 |        |           | =c/postgres          +
+           |          |          |                 |             |             |        |           | postgres=CTc/postgres
+(4 rows)
+
+Labtest=# \dt
+              List of tables
+ Schema |     Name      | Type  |  Owner
+--------+---------------+-------+----------
+ public | actor         | table | postgres
+ public | address       | table | postgres
+ public | category      | table | postgres
+ public | city          | table | postgres
+ public | country       | table | postgres
+ public | customer      | table | postgres
+ public | film          | table | postgres
+ public | film_actor    | table | postgres
+ public | film_category | table | postgres
+ public | inventory     | table | postgres
+ public | language      | table | postgres
+ public | payment       | table | postgres
+ public | rental        | table | postgres
+ public | staff         | table | postgres
+ public | store         | table | postgres
+(15 rows)
+
+
+
+
+==================== pgadmin commands======================
+
+reset / refresh  screen in pg admin command line == ctrl + c 
+\dt
+\d
+\! clear
+\d schema.*
+\q
+ 
+create db 
+create table
+create schema
+insert 
+alter
+order by
+select along with == asc ,  desc , in , where , limit 
+\s = history 
+drop 
+
+
+
+
+
+Q1 display records having enrollment date of current month
+Q2 backup of profile table'
+Q3 insert 100 records in table
+Q4 display records name start with n 
+Q5 records of name ab , cd , ef 
+Q6 Records which not contain neha das , Deepak kumar 
+Q7 display those records having odd student id 
+Q8 display records which ending name with kumar and sharma and singh and enroll date should be last 3 months order by descending
+Q9 display records from profile table month wise and count as well..
